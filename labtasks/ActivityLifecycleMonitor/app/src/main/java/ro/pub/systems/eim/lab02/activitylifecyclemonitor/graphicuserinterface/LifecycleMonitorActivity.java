@@ -1,5 +1,6 @@
 package ro.pub.systems.eim.lab02.activitylifecyclemonitor.graphicuserinterface;
 
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 
@@ -62,7 +64,99 @@ public class LifecycleMonitorActivity extends AppCompatActivity {
         Button cancelButton = (Button) findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(buttonClickListener);
 
-        Log.d(Constants.TAG, "onCreate() method was invoked without a previous state");
+        if (savedInstanceState == null) {
+            Log.d(Constants.TAG, "onCreate() method was invoked without a previous state");
+        }
+        else {
+            Log.d(Constants.TAG, "onCreate() method was invoked having a previous state");
+            if (savedInstanceState.containsKey(Constants.USERNAME_EDIT_TEXT)) {
+                EditText usernameEditText = (EditText)findViewById(R.id.username_edit_text);
+                usernameEditText.setText(savedInstanceState.getString(Constants.USERNAME_EDIT_TEXT));
+            }
+            if (savedInstanceState.containsKey(Constants.PASSWORD_EDIT_TEXT)) {
+                EditText passwordEditText = (EditText)findViewById(R.id.password_edit_text);
+                passwordEditText.setText(savedInstanceState.getString(Constants.PASSWORD_EDIT_TEXT));
+            }
+            if (savedInstanceState.containsKey(Constants.REMEMBER_ME_CHECKBOX)) {
+                CheckBox rememberMeCheckbox = (CheckBox)findViewById(R.id.remember_me_checkbox);
+                rememberMeCheckbox.setChecked(savedInstanceState.getBoolean(Constants.REMEMBER_ME_CHECKBOX));
+            }
+
+        }
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        EditText usr = (EditText)findViewById(R.id.username_edit_text);
+        EditText passwd = (EditText)findViewById(R.id.password_edit_text);
+        CheckBox rememberMeCheckBox = (CheckBox)findViewById(R.id.remember_me_checkbox);
+        if (rememberMeCheckBox.isChecked()) {
+            savedInstanceState.putString(Constants.USERNAME_EDIT_TEXT, usr.getText().toString());
+            savedInstanceState.putString(Constants.PASSWORD_EDIT_TEXT, passwd.getText().toString());
+            savedInstanceState.putBoolean(Constants.REMEMBER_ME_CHECKBOX, rememberMeCheckBox.isChecked());
+        }
+        Log.d(Constants.TAG, "??? saveInstance was invoked");
+
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState.containsKey(Constants.USERNAME_EDIT_TEXT)) {
+            EditText usernameEditText = (EditText)findViewById(R.id.username_edit_text);
+            usernameEditText.setText(savedInstanceState.getString(Constants.USERNAME_EDIT_TEXT));
+        }
+        if (savedInstanceState.containsKey(Constants.PASSWORD_EDIT_TEXT)) {
+            EditText passwordEditText = (EditText)findViewById(R.id.password_edit_text);
+            passwordEditText.setText(savedInstanceState.getString(Constants.PASSWORD_EDIT_TEXT));
+        }
+        if (savedInstanceState.containsKey(Constants.REMEMBER_ME_CHECKBOX)) {
+            CheckBox rememberMeCheckBox = (CheckBox) findViewById(R.id.remember_me_checkbox);
+            rememberMeCheckBox.setChecked(savedInstanceState.getBoolean(Constants.REMEMBER_ME_CHECKBOX));
+        }
+
+        Log.d(Constants.TAG, "??? restoreInstance was invoked");
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(Constants.TAG, "??? Restart was invoked");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(Constants.TAG, "??? Start was invoked");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(Constants.TAG, "??? Resume was invoked");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(Constants.TAG, "??? Pause was invoked");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(Constants.TAG, "??? Stop was invoked");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(Constants.TAG, "??? Destroy was invoked");
     }
 
 }
